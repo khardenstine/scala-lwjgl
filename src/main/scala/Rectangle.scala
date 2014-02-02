@@ -1,8 +1,7 @@
 import org.lwjgl.opengl.GL11
 import scala.util.Random
 
-// TODO initTime shouldn't be required
-class Rectangle(protected val initTime: Long) extends Entity(100, 100) with Animated
+class Rectangle extends Entity(100, 100) with MultiAnimated
 {
 	private val width: Float = 300
 	private val height: Float = 225
@@ -24,8 +23,13 @@ class Rectangle(protected val initTime: Long) extends Entity(100, 100) with Anim
 		GL11.glEnd()
 	}
 
-	protected def animationStep(): Unit = {
-		rgb = (Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
-		position.setLocation(position.getX + 20, position.getY + 20)
-	}
+	protected val animations = Seq(
+		new Animation {
+			def animate(time: Long) = position.setLocation(position.getX + 1, position.getY + 1)
+		},
+		new StepAnimation {
+			protected val animationStepLength = 1000L
+			protected def animationStep() = rgb = (Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
+		}
+	)
 }

@@ -33,7 +33,7 @@ class Game {
 				shutdown()
 			}
 			if (Keyboard.getEventKey == Keyboard.KEY_A && Keyboard.getEventKeyState) {
-				entities += new Rectangle(time)
+				entities += new Rectangle
 			}
 		}
 	}
