@@ -7,19 +7,19 @@ trait Animation
 
 trait StepAnimation extends Animation
 {
-	protected val animationStepLength: Long
+	protected val stepLength: Long
 	private var lastStepTime: Option[Long] = None
 
 	def animate(time: Long): Unit = {
-		var diff = time - lastStepTime.getOrElse(time - animationStepLength)
-		if (diff >= animationStepLength)
+		var diff = time - lastStepTime.getOrElse(time - stepLength)
+		if (diff >= stepLength)
 		{
 			lastStepTime = Some(time)
 
-			while (diff >= animationStepLength)
+			while (diff >= stepLength)
 			{
 				animationStep()
-				diff -= animationStepLength
+				diff -= stepLength
 			}
 		}
 	}

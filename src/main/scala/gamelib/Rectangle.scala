@@ -8,7 +8,6 @@ class Rectangle extends Entity(100, 100) with MultiAnimated
 	private val width: Float = 300
 	private val height: Float = 225
 	protected var rgb: (Float, Float, Float) = (0, 0, 0)
-	protected val animationStepLength: Long = 1000
 
 	def draw(time: Long): Unit = {
 		animate(time)
@@ -30,7 +29,7 @@ class Rectangle extends Entity(100, 100) with MultiAnimated
 			def animate(time: Long) = position.setLocation(position.getX + 1, position.getY + 1)
 		},
 		new StepAnimation {
-			protected val animationStepLength = 1000L
+			protected val stepLength = 1000L
 			protected def animationStep() = rgb = (Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
 		}
 	)
