@@ -1,3 +1,5 @@
+package gamelib
+
 import org.lwjgl.input.Keyboard
 import org.lwjgl.{Sys, LWJGLException}
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}

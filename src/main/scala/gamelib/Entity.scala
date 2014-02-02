@@ -1,3 +1,5 @@
+package gamelib
+
 import org.lwjgl.util.Point
 
 trait IEntity

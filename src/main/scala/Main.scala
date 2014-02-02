@@ -1,3 +1,4 @@
+import gamelib.Game
 import org.lwjgl.examples.spaceinvaders
 import org.lwjgl.LWJGLException
 import org.lwjgl.opengl.Display

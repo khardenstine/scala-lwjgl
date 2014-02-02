@@ -1,3 +1,5 @@
+package gamelib
+
 trait Animation
 {
 	def animate(time: Long): Unit

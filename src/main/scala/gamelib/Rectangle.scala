@@ -1,3 +1,5 @@
+package gamelib
+
 import org.lwjgl.opengl.GL11
 import scala.util.Random
 
