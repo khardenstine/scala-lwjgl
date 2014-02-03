@@ -1,19 +1,19 @@
 package gamelib
 
 import org.lwjgl.opengl.GL11
-import scala.util.Random
+import gamelib.animations.{RandomColor, RGB}
 
 class Rectangle extends Entity(100, 100) with MultiAnimated
 {
 	private val width: Float = 300
 	private val height: Float = 225
-	protected var rgb: (Float, Float, Float) = (0, 0, 0)
+	private val rgb: RGB = new RGB(0, 0, 90000000)
 
 	def draw(time: Long): Unit = {
 		animate(time)
 
 		// set the color of the quad (R,G,B,A)
-		(GL11.glColor3f(_, _, _)).tupled(rgb)
+		rgb.applyValues(GL11.glColor3f)
 
 		// draw quad
 		GL11.glBegin(GL11.GL_QUADS)
@@ -24,13 +24,7 @@ class Rectangle extends Entity(100, 100) with MultiAnimated
 		GL11.glEnd()
 	}
 
-	protected val animations = Seq(
-		new Animation {
-			def animate(time: Long) = position.setLocation(position.getX + 1, position.getY + 1)
-		},
-		new StepAnimation {
-			protected val stepLength = 1000L
-			protected def animationStep() = rgb = (Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
-		}
+	protected def getAnimations: Seq[Animation] = Seq(
+		new RandomColor(rgb)
 	)
 }

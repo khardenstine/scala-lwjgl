@@ -29,9 +29,11 @@ trait StepAnimation extends Animation
 
 trait MultiAnimated
 {
-	protected val animations: Seq[Animation]
+	private lazy val animations: Seq[Animation] = getAnimations
 
 	def animate(time: Long): Unit = {
 		animations.foreach(_.animate(time))
 	}
+
+	protected def getAnimations: Seq[Animation]
 }
