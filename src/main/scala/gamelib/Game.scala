@@ -4,11 +4,14 @@ import org.lwjgl.input.Keyboard
 import org.lwjgl.{Sys, LWJGLException}
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}
 import scala.collection.mutable
+import gamelib.input.{Repetition, EventKeyState, KeyboardListener, InputListenerRegistry}
 
 class Game {
 	private var isRunning: Boolean = false
 
 	private val entities: mutable.MutableList[Entity] = mutable.MutableList.empty
+
+	private val inputListeners = new InputListenerRegistry
 
 	private def gameLoop(): Unit = {
 		while(isRunning && !Display.isCloseRequested) {
@@ -31,15 +34,9 @@ class Game {
 
 	private def handleKeyboard(time: Long): Unit = {
 		while(Keyboard.next()) {
-			if (Keyboard.getEventKey == Keyboard.KEY_ESCAPE) {
-				shutdown()
-			}
-			if (Keyboard.getEventKey == Keyboard.KEY_A && Keyboard.getEventKeyState) {
-				entities += new Rectangle
-			}
+			inputListeners.handleInput(Keyboard.getEventKey, Keyboard.getEventKeyState)
 		}
 	}
-
 
 	def getTime: Long = {
 		(Sys.getTime * 1000) / Sys.getTimerResolution
@@ -65,6 +62,24 @@ class Game {
 		GL11.glLoadIdentity()
 		GL11.glOrtho(0, 800, 0, 600, 1, -1)
 		GL11.glMatrixMode(GL11.GL_MODELVIEW)
+
+		inputListeners.addListener(new KeyboardListener {
+			protected def handle() = shutdown()
+
+			val eventState = EventKeyState.BOTH
+			val key = Keyboard.KEY_ESCAPE
+			val repetition = Repetition.FOREVER
+		})
+
+		inputListeners.addListener(new KeyboardListener {
+			protected def handle() = {
+				entities += new MovingRectangle
+			}
+
+			val eventState = EventKeyState.DOWN
+			val key = Keyboard.KEY_A
+			val repetition = Repetition.FOREVER
+		})
 	}
 
 	private def destroy(): Unit = {
