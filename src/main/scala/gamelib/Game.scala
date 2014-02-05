@@ -73,7 +73,7 @@ class Game {
 
 		inputListeners.addListener(new KeyboardListener {
 			protected def handle() = {
-				entities += new MovingRectangle
+				entities += new MovingRectangle(inputListeners)
 			}
 
 			val eventState = EventKeyState.DOWN

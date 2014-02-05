@@ -11,6 +11,10 @@ class InputListenerRegistry
 		inputListeners.addBinding(listener.key, listener)
 	}
 
+	def addListeners(listeners: KeyboardListener*) = {
+		listeners.foreach(addListener)
+	}
+
 	def handleInput(keyCode: Int, keyState: Boolean) = {
 		inputListeners.get(keyCode).foreach {
 			set =>
@@ -58,4 +62,14 @@ object Repetition extends Enumeration {
 
 object EventKeyState extends Enumeration {
 	val DOWN, RELEASED, BOTH = Value
+}
+
+abstract class ForeverDown(val key: Int) extends KeyboardListener {
+	val eventState = EventKeyState.DOWN
+	val repetition = Repetition.FOREVER
+}
+
+abstract class ForeverReleased(val key: Int) extends KeyboardListener {
+	val eventState = EventKeyState.RELEASED
+	val repetition = Repetition.FOREVER
 }
