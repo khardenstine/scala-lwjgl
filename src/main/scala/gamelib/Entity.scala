@@ -5,7 +5,8 @@ import org.lwjgl.util.Point
 trait IEntity
 {
 	protected val position: Point
-	def draw(time: Long)
+	def draw(time: Long): Unit
+	def destroy(): Unit
 }
 
 // TODO replace position with more accurate solution

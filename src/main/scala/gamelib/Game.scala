@@ -67,17 +67,27 @@ class Game {
 			protected def handle() = shutdown()
 
 			val eventState = EventKeyState.BOTH
-			val key = Keyboard.KEY_ESCAPE
+			val keyCode = Keyboard.KEY_ESCAPE
 			val repetition = Repetition.FOREVER
 		})
 
-		inputListeners.addListener(new KeyboardListener {
+		inputListeners.addListeners(new KeyboardListener {
 			protected def handle() = {
 				entities += new MovingRectangle(inputListeners)
 			}
 
 			val eventState = EventKeyState.DOWN
-			val key = Keyboard.KEY_A
+			val keyCode = Keyboard.KEY_A
+			val repetition = Repetition.FOREVER
+		},
+		new KeyboardListener {
+			protected def handle() = {
+				entities.foreach(_.destroy())
+				entities.clear()
+			}
+
+			val eventState = EventKeyState.DOWN
+			val keyCode = Keyboard.KEY_D
 			val repetition = Repetition.FOREVER
 		})
 	}

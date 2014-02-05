@@ -14,7 +14,7 @@ class MovingRectangle(inputListener: InputListenerRegistry) extends Rectangle
 	val TERMINAL_VELOCITY: Float = 6
 	val ACCELERATION: Float = 0.5F
 
-	inputListener.addListeners(
+	private val listeners = Seq(
 		new ForeverDown(Keyboard.KEY_RIGHT) {
 			protected def handle() = goal_velocity_x += TERMINAL_VELOCITY
 		},
@@ -40,6 +40,8 @@ class MovingRectangle(inputListener: InputListenerRegistry) extends Rectangle
 			protected def handle() = goal_velocity_y += TERMINAL_VELOCITY
 		}
 	)
+
+	inputListener.addListeners(listeners:_*)
 
 	override protected def getAnimations: Seq[Animation] = {
 		super.getAnimations ++ Seq(
@@ -69,5 +71,10 @@ class MovingRectangle(inputListener: InputListenerRegistry) extends Rectangle
 		} else {
 			goalVelocity
 		}
+	}
+
+	override def destroy() = {
+		super.destroy()
+		inputListener.destroyListeners(listeners:_*)
 	}
 }

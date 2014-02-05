@@ -27,4 +27,6 @@ class Rectangle extends Entity(100, 100) with MultiAnimated
 	protected def getAnimations: Seq[Animation] = Seq(
 		new RandomColor(rgb)
 	)
+
+	def destroy() = {}
 }
