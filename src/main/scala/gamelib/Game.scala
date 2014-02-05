@@ -64,7 +64,7 @@ class Game {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW)
 
 		inputListeners.addListener(new KeyboardListener {
-			protected def handle() = shutdown()
+			protected def handle(keyState: Boolean) = shutdown()
 
 			val eventState = EventKeyState.BOTH
 			val keyCode = Keyboard.KEY_ESCAPE
@@ -72,7 +72,7 @@ class Game {
 		})
 
 		inputListeners.addListeners(new KeyboardListener {
-			protected def handle() = {
+			protected def handle(keyState: Boolean) = {
 				entities += new MovingRectangle(inputListeners)
 			}
 
@@ -81,7 +81,7 @@ class Game {
 			val repetition = Repetition.FOREVER
 		},
 		new KeyboardListener {
-			protected def handle() = {
+			protected def handle(keyState: Boolean) = {
 				entities.foreach(_.destroy())
 				entities.clear()
 			}

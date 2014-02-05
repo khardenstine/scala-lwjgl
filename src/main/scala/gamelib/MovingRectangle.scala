@@ -1,7 +1,7 @@
 package gamelib
 
 import org.lwjgl.input.Keyboard
-import gamelib.input.{ForeverReleased, ForeverDown, InputListenerRegistry}
+import gamelib.input._
 
 class MovingRectangle(inputListener: InputListenerRegistry) extends Rectangle
 {
@@ -15,29 +15,29 @@ class MovingRectangle(inputListener: InputListenerRegistry) extends Rectangle
 	val ACCELERATION: Float = 0.5F
 
 	private val listeners = Seq(
-		new ForeverDown(Keyboard.KEY_RIGHT) {
-			protected def handle() = goal_velocity_x += TERMINAL_VELOCITY
+		new StatefulBothListener {
+			val keyCode = Keyboard.KEY_RIGHT
+			val repetition = Repetition.FOREVER
+			protected def down() =		goal_velocity_x += TERMINAL_VELOCITY
+			protected def released() =	goal_velocity_x -= TERMINAL_VELOCITY
 		},
-		new ForeverDown(Keyboard.KEY_LEFT) {
-			protected def handle() = goal_velocity_x -= TERMINAL_VELOCITY
+		new StatefulBothListener {
+			val keyCode = Keyboard.KEY_LEFT
+			val repetition = Repetition.FOREVER
+			protected def down() =		goal_velocity_x -= TERMINAL_VELOCITY
+			protected def released() =	goal_velocity_x += TERMINAL_VELOCITY
 		},
-		new ForeverDown(Keyboard.KEY_UP) {
-			protected def handle() = goal_velocity_y += TERMINAL_VELOCITY
+		new StatefulBothListener {
+			val keyCode = Keyboard.KEY_UP
+			val repetition = Repetition.FOREVER
+			protected def down() =		goal_velocity_y += TERMINAL_VELOCITY
+			protected def released() =	goal_velocity_y -= TERMINAL_VELOCITY
 		},
-		new ForeverDown(Keyboard.KEY_DOWN) {
-			protected def handle() = goal_velocity_y -= TERMINAL_VELOCITY
-		},
-		new ForeverReleased(Keyboard.KEY_RIGHT) {
-			protected def handle() = goal_velocity_x -= TERMINAL_VELOCITY
-		},
-		new ForeverReleased(Keyboard.KEY_LEFT) {
-			protected def handle() = goal_velocity_x += TERMINAL_VELOCITY
-		},
-		new ForeverReleased(Keyboard.KEY_UP) {
-			protected def handle() = goal_velocity_y -= TERMINAL_VELOCITY
-		},
-		new ForeverReleased(Keyboard.KEY_DOWN) {
-			protected def handle() = goal_velocity_y += TERMINAL_VELOCITY
+		new StatefulBothListener {
+			val keyCode = Keyboard.KEY_DOWN
+			val repetition = Repetition.FOREVER
+			protected def down() =		goal_velocity_y -= TERMINAL_VELOCITY
+			protected def released() =	goal_velocity_y += TERMINAL_VELOCITY
 		}
 	)
 
