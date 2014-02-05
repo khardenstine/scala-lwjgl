@@ -20,10 +20,10 @@ class RGB(
 	def getBlue: Float = blue
 
 	def getTuple: (Float, Float, Float) = {
-		(red, green, blue)
+		(getRed, getGreen, blue)
 	}
 
 	def applyValues[T](fun: (Float, Float, Float) => T): T = {
-		fun(red, green, blue)
+		fun(getRed, getGreen, getBlue)
 	}
 }
