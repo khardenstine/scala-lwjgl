@@ -1,9 +1,4 @@
-package gamelib
-
-trait Animation
-{
-	def animate(time: Long): Unit
-}
+package gamelib.animations
 
 trait StepAnimation extends Animation
 {
@@ -25,15 +20,4 @@ trait StepAnimation extends Animation
 	}
 
 	protected def animationStep()
-}
-
-trait MultiAnimated
-{
-	private lazy val animations: Seq[Animation] = getAnimations
-
-	def animate(time: Long): Unit = {
-		animations.foreach(_.animate(time))
-	}
-
-	protected def getAnimations: Seq[Animation]
 }

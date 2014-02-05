@@ -1,4 +1,4 @@
-package gamelib.animations
+package gamelib.util
 
 // todo sanitize values
 class RGB(

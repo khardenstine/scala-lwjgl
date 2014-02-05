@@ -1,4 +1,4 @@
-package gamelib
+package gamelib.entities
 
 import org.lwjgl.util.Point
 

@@ -5,6 +5,7 @@ import org.lwjgl.{Sys, LWJGLException}
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}
 import scala.collection.mutable
 import gamelib.input.{Repetition, EventKeyState, KeyboardListener, InputListenerRegistry}
+import gamelib.entities.{MovingRectangle, Entity}
 
 class Game {
 	private var isRunning: Boolean = false

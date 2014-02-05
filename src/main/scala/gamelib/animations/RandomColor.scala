@@ -1,7 +1,7 @@
 package gamelib.animations
 
-import gamelib.StepAnimation
 import scala.util.Random
+import gamelib.util.RGB
 
 class RandomColor(rgb: RGB) extends StepAnimation {
 	protected val stepLength = 1000L

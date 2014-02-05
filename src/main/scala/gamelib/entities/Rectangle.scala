@@ -1,7 +1,8 @@
-package gamelib
+package gamelib.entities
 
 import org.lwjgl.opengl.GL11
-import gamelib.animations.{RandomColor, RGB}
+import gamelib.animations.{Animation, RandomColor}
+import gamelib.util.RGB
 
 class Rectangle extends Entity(100, 100) with MultiAnimated
 {

@@ -1,7 +1,8 @@
-package gamelib
+package gamelib.entities
 
 import org.lwjgl.input.Keyboard
-import gamelib.input._
+import gamelib.animations.Animation
+import gamelib.input.{Repetition, StatefulBothListener, InputListenerRegistry}
 
 class MovingRectangle(inputListener: InputListenerRegistry) extends Rectangle
 {
