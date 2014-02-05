@@ -41,7 +41,6 @@ trait KeyboardListener {
 	val keyCode: Int
 	val eventState: EventKeyState.Value
 	val repetition: Repetition.Value
-	private var _destroy = false
 
 	protected def handle(): Unit
 
@@ -50,21 +49,14 @@ trait KeyboardListener {
 	 * @return true if we don't need to keep listening
 	 */
 	final def heard(): Boolean = {
-		if (_destroy) {
-			sys.error("destroyed listener has been heard")
-			true
-		} else {
-			handle()
-			repetition match {
-				case Repetition.FOREVER => false
-				case Repetition.ONCE => true
-			}
+		handle()
+		repetition match {
+			case Repetition.FOREVER => false
+			case Repetition.ONCE => true
 		}
 	}
 
-	final def destroy() = {
-		_destroy = true
-	}
+	def destroy() = {}
 
 	final def isApplicable(keyState: Boolean): Boolean = {
 		eventState match {
@@ -91,4 +83,14 @@ abstract class ForeverDown(val keyCode: Int) extends KeyboardListener {
 abstract class ForeverReleased(val keyCode: Int) extends KeyboardListener {
 	val eventState = EventKeyState.RELEASED
 	val repetition = Repetition.FOREVER
+}
+
+abstract class OnceDown(val keyCode: Int) extends KeyboardListener {
+	val eventState = EventKeyState.DOWN
+	val repetition = Repetition.ONCE
+}
+
+abstract class OnceReleased(val keyCode: Int) extends KeyboardListener {
+	val eventState = EventKeyState.RELEASED
+	val repetition = Repetition.ONCE
 }
