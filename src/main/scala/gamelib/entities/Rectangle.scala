@@ -6,8 +6,8 @@ import gamelib.util.RGB
 
 class Rectangle extends Entity(100, 100) with MultiAnimated
 {
-	private val width: Float = 300
-	private val height: Float = 225
+	private val width: Float = 25
+	private val height: Float = 25
 	private val rgb: RGB = new RGB(0, 0, 90000000)
 
 	def draw(time: Long): Unit = {

@@ -1,13 +1,13 @@
 package gamelib
 
+import gamelib.input.{Repetition, EventKeyState, KeyboardListener, InputListenerRegistry}
+import gamelib.entities.{Entity, MovingRectangle}
 import org.lwjgl.input.Keyboard
 import org.lwjgl.{Sys, LWJGLException}
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}
 import scala.collection.mutable
-import gamelib.input.{Repetition, EventKeyState, KeyboardListener, InputListenerRegistry}
-import gamelib.entities.{MovingRectangle, Entity}
 
-class Game {
+abstract class Game {
 	private var isRunning: Boolean = false
 
 	private val entities: mutable.MutableList[Entity] = mutable.MutableList.empty
@@ -43,13 +43,17 @@ class Game {
 		(Sys.getTime * 1000) / Sys.getTimerResolution
 	}
 
+	val displayTitle: String
+	val displayWidth: Int
+	val displayHeight: Int
+
 	private def init(): Unit = {
 		isRunning = true
 		System.out.println("Starting up.")
 
 		try {
-			Display.setDisplayMode(new DisplayMode(800, 600))
-			Display.setTitle("HW")
+			Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight))
+			Display.setTitle(displayTitle)
 			Display.create()
 		} catch	{
 			case e: LWJGLException => {
@@ -59,9 +63,15 @@ class Game {
 			}
 		}
 
+		// enable textures since we're going to use these for our sprites
+		GL11.glEnable(GL11.GL_TEXTURE_2D)
+
+		// disable the OpenGL depth test since we're rendering 2D graphics
+		GL11.glDisable(GL11.GL_DEPTH_TEST)
+
 		GL11.glMatrixMode(GL11.GL_PROJECTION)
 		GL11.glLoadIdentity()
-		GL11.glOrtho(0, 800, 0, 600, 1, -1)
+		GL11.glOrtho(0, displayWidth, 0, displayHeight, 1, -1)
 		GL11.glMatrixMode(GL11.GL_MODELVIEW)
 
 		inputListeners.addListener(new KeyboardListener {
