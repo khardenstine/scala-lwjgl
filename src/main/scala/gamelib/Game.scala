@@ -1,18 +1,24 @@
 package gamelib
 
 import gamelib.input.{Repetition, EventKeyState, KeyboardListener, InputListenerRegistry}
-import gamelib.entities.{Entity, MovingRectangle}
+import gamelib.entities.{IEntity, Sprite, MovingRectangle}
 import org.lwjgl.input.Keyboard
 import org.lwjgl.{Sys, LWJGLException}
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}
 import scala.collection.mutable
+import org.lwjgl.examples.spaceinvaders.TextureLoader
+import org.lwjgl.util.Point
 
 abstract class Game {
 	private var isRunning: Boolean = false
-
-	private val entities: mutable.MutableList[Entity] = mutable.MutableList.empty
-
+	private val entities: mutable.MutableList[IEntity] = mutable.MutableList.empty
 	private val inputListeners = new InputListenerRegistry
+	private val textureLoader: TextureLoader = new TextureLoader
+
+	val displayTitle: String
+	val displayWidth: Int
+	val displayHeight: Int
+
 
 	private def gameLoop(): Unit = {
 		while(isRunning && !Display.isCloseRequested) {
@@ -42,10 +48,6 @@ abstract class Game {
 	def getTime: Long = {
 		(Sys.getTime * 1000) / Sys.getTimerResolution
 	}
-
-	val displayTitle: String
-	val displayWidth: Int
-	val displayHeight: Int
 
 	private def init(): Unit = {
 		isRunning = true
@@ -84,7 +86,8 @@ abstract class Game {
 
 		inputListeners.addListeners(new KeyboardListener {
 			protected def handle(keyState: Boolean) = {
-				entities += new MovingRectangle(inputListeners)
+				//entities += new MovingRectangle(inputListeners)
+				entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
 			}
 
 			val eventState = EventKeyState.DOWN
