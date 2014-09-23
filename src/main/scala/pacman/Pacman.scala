@@ -20,33 +20,29 @@ class Pacman extends Game {
   override protected def init() {
     super.init()
 
-    inputListeners.addListeners(new KeyboardListener {
-      protected def handle(keyState: Boolean) = shutdown()
-
-      val eventState = EventKeyState.BOTH
-      val keyCode = Keyboard.KEY_ESCAPE
-      val repetition = Repetition.FOREVER
-    },
-      new KeyboardListener {
-        protected def handle(keyState: Boolean) = {
-          //entities += new MovingRectangle(inputListeners)
-          entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
-        }
-
-        val eventState = EventKeyState.DOWN
-        val keyCode = Keyboard.KEY_A
-        val repetition = Repetition.FOREVER
-      },
-      new KeyboardListener {
-        protected def handle(keyState: Boolean) = {
+    inputListeners.addListeners(
+      KeyboardListener(
+        Keyboard.KEY_ESCAPE,
+        EventKeyState.BOTH,
+        Repetition.FOREVER,
+        _ => shutdown()
+      ),
+      KeyboardListener(
+        Keyboard.KEY_A,
+        EventKeyState.DOWN,
+        Repetition.FOREVER,
+        _ => entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
+      ),
+      KeyboardListener(
+        Keyboard.KEY_D,
+        EventKeyState.DOWN,
+        Repetition.FOREVER,
+        _ => {
           entities.foreach(_.destroy())
           entities.clear()
         }
-
-        val eventState = EventKeyState.DOWN
-        val keyCode = Keyboard.KEY_D
-        val repetition = Repetition.FOREVER
-      })
+      )
+    )
   }
 
   protected def handleKeyboard(time: Long, eventKey: Int, eventKeyState: Boolean): Unit = {

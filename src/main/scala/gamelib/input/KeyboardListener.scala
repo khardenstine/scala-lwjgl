@@ -30,6 +30,18 @@ trait KeyboardListener {
   }
 }
 
+object KeyboardListener {
+  def apply(_keyCode: Int, _eventState: EventKeyState.Value, _repetition: Repetition.Value, handler: Boolean => Unit): KeyboardListener = {
+    new KeyboardListener {
+      protected def handle(keyState: Boolean): Unit = handler(keyState)
+
+      val eventState: EventKeyState.Value = _eventState
+      val repetition: Repetition.Value = _repetition
+      val keyCode: Int = _keyCode
+    }
+  }
+}
+
 abstract class BothListener extends KeyboardListener {
   protected def handle(keyState: Boolean) = {
     if (keyState) {
