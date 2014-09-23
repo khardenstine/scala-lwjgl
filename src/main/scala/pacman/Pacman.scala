@@ -8,11 +8,10 @@ import org.lwjgl.examples.spaceinvaders.TextureLoader
 import org.lwjgl.input.Keyboard
 import org.lwjgl.util.Point
 
-class Pacman extends Game
-{
-	val displayTitle = "Pac-man"
-	val displayWidth = 224
-	val displayHeight = 288
+class Pacman extends Game {
+  val displayTitle = "Pac-man"
+  val displayWidth = 224
+  val displayHeight = 288
 
   private val entities: mutable.MutableList[IEntity] = mutable.MutableList.empty
   private val textureLoader: TextureLoader = new TextureLoader
@@ -28,26 +27,26 @@ class Pacman extends Game
       val keyCode = Keyboard.KEY_ESCAPE
       val repetition = Repetition.FOREVER
     },
-    new KeyboardListener {
-      protected def handle(keyState: Boolean) = {
-        //entities += new MovingRectangle(inputListeners)
-        entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
-      }
+      new KeyboardListener {
+        protected def handle(keyState: Boolean) = {
+          //entities += new MovingRectangle(inputListeners)
+          entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
+        }
 
-      val eventState = EventKeyState.DOWN
-      val keyCode = Keyboard.KEY_A
-      val repetition = Repetition.FOREVER
-    },
-    new KeyboardListener {
-      protected def handle(keyState: Boolean) = {
-        entities.foreach(_.destroy())
-        entities.clear()
-      }
+        val eventState = EventKeyState.DOWN
+        val keyCode = Keyboard.KEY_A
+        val repetition = Repetition.FOREVER
+      },
+      new KeyboardListener {
+        protected def handle(keyState: Boolean) = {
+          entities.foreach(_.destroy())
+          entities.clear()
+        }
 
-      val eventState = EventKeyState.DOWN
-      val keyCode = Keyboard.KEY_D
-      val repetition = Repetition.FOREVER
-    })
+        val eventState = EventKeyState.DOWN
+        val keyCode = Keyboard.KEY_D
+        val repetition = Repetition.FOREVER
+      })
   }
 
   protected def handleKeyboard(time: Long, eventKey: Int, eventKeyState: Boolean): Unit = {
