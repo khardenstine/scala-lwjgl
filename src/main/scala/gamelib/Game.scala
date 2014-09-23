@@ -1,24 +1,15 @@
 package gamelib
 
-import gamelib.input.{Repetition, EventKeyState, KeyboardListener, InputListenerRegistry}
-import gamelib.entities.{IEntity, Sprite, MovingRectangle}
 import org.lwjgl.input.Keyboard
 import org.lwjgl.{Sys, LWJGLException}
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}
-import scala.collection.mutable
-import org.lwjgl.examples.spaceinvaders.TextureLoader
-import org.lwjgl.util.Point
 
-abstract class Game {
+trait Game {
 	private var isRunning: Boolean = false
-	private val entities: mutable.MutableList[IEntity] = mutable.MutableList.empty
-	private val inputListeners = new InputListenerRegistry
-	private val textureLoader: TextureLoader = new TextureLoader
 
 	val displayTitle: String
 	val displayWidth: Int
 	val displayHeight: Int
-
 
 	private def gameLoop(): Unit = {
 		while(isRunning && !Display.isCloseRequested) {
@@ -31,25 +22,25 @@ abstract class Game {
 
 			val time = getTime
 
-			handleKeyboard(time)
+      while(Keyboard.next()) {
+        handleKeyboard(time, Keyboard.getEventKey, Keyboard.getEventKeyState)
+      }
 
-			entities.foreach(_.draw(time))
+      redraw(time)
 
 			Display.update()
 		}
 	}
 
-	private def handleKeyboard(time: Long): Unit = {
-		while(Keyboard.next()) {
-			inputListeners.handleInput(Keyboard.getEventKey, Keyboard.getEventKeyState)
-		}
-	}
+  protected def handleKeyboard(time: Long, eventKey: Int, eventKeyState: Boolean): Unit
 
-	def getTime: Long = {
+  protected def redraw(time: Long): Unit
+
+	private def getTime: Long = {
 		(Sys.getTime * 1000) / Sys.getTimerResolution
 	}
 
-	private def init(): Unit = {
+	protected def init() {
 		isRunning = true
 		System.out.println("Starting up.")
 
@@ -75,53 +66,24 @@ abstract class Game {
 		GL11.glLoadIdentity()
 		GL11.glOrtho(0, displayWidth, 0, displayHeight, 1, -1)
 		GL11.glMatrixMode(GL11.GL_MODELVIEW)
-
-		inputListeners.addListener(new KeyboardListener {
-			protected def handle(keyState: Boolean) = shutdown()
-
-			val eventState = EventKeyState.BOTH
-			val keyCode = Keyboard.KEY_ESCAPE
-			val repetition = Repetition.FOREVER
-		})
-
-		inputListeners.addListeners(new KeyboardListener {
-			protected def handle(keyState: Boolean) = {
-				//entities += new MovingRectangle(inputListeners)
-				entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
-			}
-
-			val eventState = EventKeyState.DOWN
-			val keyCode = Keyboard.KEY_A
-			val repetition = Repetition.FOREVER
-		},
-		new KeyboardListener {
-			protected def handle(keyState: Boolean) = {
-				entities.foreach(_.destroy())
-				entities.clear()
-			}
-
-			val eventState = EventKeyState.DOWN
-			val keyCode = Keyboard.KEY_D
-			val repetition = Repetition.FOREVER
-		})
 	}
 
-	private def destroy(): Unit = {
+	protected def destroy() {
 		Display.destroy()
 	}
 
-	private def shutdown(): Unit = {
+	protected final def shutdown() {
 		isRunning = false
 		System.out.println("Shutting down.")
 	}
 
-	def run(): Unit = {
+	def run() {
 		init()
 		gameLoop()
 		destroy()
 	}
 
-	def terminate(): Unit = {
+	def terminate() {
 	    shutdown()
 		// log termination
 	}
