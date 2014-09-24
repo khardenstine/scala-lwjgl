@@ -1,7 +1,7 @@
 package pacman
 
 import gamelib.Game
-import gamelib.input.{Repetition, EventKeyState, KeyboardListener, InputListenerRegistry}
+import gamelib.input._
 import scala.collection.mutable
 import gamelib.entities.{Sprite, IEntity}
 import org.lwjgl.examples.spaceinvaders.TextureLoader
@@ -27,21 +27,15 @@ class Pacman extends Game {
         Repetition.FOREVER,
         _ => shutdown()
       ),
-      KeyboardListener(
-        Keyboard.KEY_A,
-        EventKeyState.DOWN,
-        Repetition.FOREVER,
-        _ => entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
-      ),
-      KeyboardListener(
-        Keyboard.KEY_D,
-        EventKeyState.DOWN,
-        Repetition.FOREVER,
-        _ => {
+      new ForeverDown(Keyboard.KEY_A) {
+        def handle(keyState: Boolean) = entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
+      },
+      new ForeverDown(Keyboard.KEY_D) {
+        def handle(keyState: Boolean) = {
           entities.foreach(_.destroy())
           entities.clear()
         }
-      )
+      }
     )
   }
 
