@@ -3,10 +3,11 @@ package pacman
 import gamelib.Game
 import gamelib.input._
 import scala.collection.mutable
-import gamelib.entities.{Sprite, IEntity}
+import gamelib.entities.IEntity
 import org.lwjgl.examples.spaceinvaders.TextureLoader
 import org.lwjgl.input.Keyboard
 import org.lwjgl.util.Point
+import pacman.entity.Pacman
 
 class PacmanGame extends Game {
   val displayTitle = "Pac-man"
@@ -28,7 +29,7 @@ class PacmanGame extends Game {
         _ => shutdown()
       ),
       new ForeverDown(Keyboard.KEY_A) {
-        def handle(keyState: Boolean) = entities += new Sprite(new Point(100, 100), textureLoader, "spaceinvaders/ship.gif")
+        def handle(keyState: Boolean) = entities += new Pacman(new Point(100, 100), textureLoader)
       },
       new ForeverDown(Keyboard.KEY_D) {
         def handle(keyState: Boolean) = {
@@ -46,4 +47,8 @@ class PacmanGame extends Game {
   protected def redraw(time: Long): Unit = {
     entities.foreach(_.draw(time))
   }
+}
+
+object PacmanGame {
+  final val SPRITE_SHEET_LOC = "pacman/sprites.png"
 }
