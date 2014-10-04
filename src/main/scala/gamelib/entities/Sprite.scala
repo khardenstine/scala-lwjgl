@@ -19,13 +19,13 @@ class Sprite(val position: Point, texture: Texture) extends IEntity {
     GL11.glTranslatef(position.getX, position.getY, 0)
     GL11.glBegin(GL11.GL_QUADS)
 
-    GL11.glTexCoord2f(0, 0)
+    GL11.glTexCoord2f(texture.getStartX, texture.getStartY)
     GL11.glVertex2f(0, 0)
-    GL11.glTexCoord2f(0, texture.getHeight)
+    GL11.glTexCoord2f(texture.getStartX, texture.getHeight)
     GL11.glVertex2f(0, getHeight)
     GL11.glTexCoord2f(texture.getWidth, texture.getHeight)
     GL11.glVertex2f(getWidth, getHeight)
-    GL11.glTexCoord2f(texture.getWidth, 0)
+    GL11.glTexCoord2f(texture.getWidth, texture.getStartY)
     GL11.glVertex2f(getWidth, 0)
 
     GL11.glEnd()

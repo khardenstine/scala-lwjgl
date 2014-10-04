@@ -72,6 +72,12 @@ public class Texture {
 	/** The ratio of the height of the image to the texture */
 	private float	heightRatio;
 
+    private int xOffset;
+    private int yOffset;
+
+    private float startX;
+    private float startY;
+
 	/**
 	 * Create a new texture
 	 *
@@ -89,6 +95,40 @@ public class Texture {
 	public void bind() {
 		glBindTexture(target, textureID);
 	}
+
+    public float getStartX()
+    {
+        return startX;
+    }
+
+    public float getStartY()
+    {
+        return startY;
+    }
+
+    public int getXOffset() {
+        return xOffset;
+    }
+
+    public void setXOffset(int xOffset) {
+        this.xOffset = xOffset;
+        if (texWidth != 0) {
+            startX = ((float) xOffset) / texWidth;
+        }
+        setWidth();
+    }
+
+    public int getYOffset() {
+        return yOffset;
+    }
+
+    public void setYOffset(int yOffset) {
+        this.yOffset = yOffset;
+        if (texHeight != 0) {
+            startY = ((float) yOffset) / texHeight;
+        }
+        setHeight();
+    }
 
 	/**
 	 * Set the height of the image
@@ -172,7 +212,7 @@ public class Texture {
 	 */
 	private void setHeight() {
 		if (texHeight != 0) {
-			heightRatio = ((float) height) / texHeight;
+			heightRatio = ((float) (height + yOffset)) / texHeight;
 		}
 	}
 
@@ -182,7 +222,7 @@ public class Texture {
 	 */
 	private void setWidth() {
 		if (texWidth != 0) {
-			widthRatio = ((float) width) / texWidth;
+			widthRatio = ((float) (width + xOffset)) / texWidth;
 		}
 	}
 }
