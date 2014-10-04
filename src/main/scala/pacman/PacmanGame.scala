@@ -8,7 +8,7 @@ import org.lwjgl.examples.spaceinvaders.TextureLoader
 import org.lwjgl.input.Keyboard
 import org.lwjgl.util.Point
 
-class Pacman extends Game {
+class PacmanGame extends Game {
   val displayTitle = "Pac-man"
   val displayWidth = 224
   val displayHeight = 288

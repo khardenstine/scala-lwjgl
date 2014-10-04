@@ -1,9 +1,9 @@
 import org.lwjgl.examples.spaceinvaders
-import pacman.Pacman
+import pacman.PacmanGame
 
 object Main {
   def main(args: Array[String]) {
-    new Pacman().run()
+    new PacmanGame().run()
   }
 
   def spaceInvaders() {
