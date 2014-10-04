@@ -24,7 +24,7 @@ class Rectangle extends Entity(100, 100) with MultiAnimated {
     GL11.glEnd()
   }
 
-  protected def getAnimations: Seq[Animation] = Seq(
+  protected def getAnimations: List[Animation] = List(
     new RandomColor(rgb)
   )
 

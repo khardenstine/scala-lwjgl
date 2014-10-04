@@ -51,8 +51,8 @@ class MovingRectangle(inputListener: InputListenerRegistry) extends Rectangle {
 
   inputListener.addListeners(listeners: _*)
 
-  override protected def getAnimations: Seq[Animation] = {
-    super.getAnimations ++ Seq(
+  override protected def getAnimations: List[Animation] = {
+    super.getAnimations.::(
       new Animation {
         def animate(time: Long) = {
           velocity_x = accelerate(velocity_x, goal_velocity_x)

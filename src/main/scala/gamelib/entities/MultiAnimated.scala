@@ -9,5 +9,5 @@ trait MultiAnimated {
     animations.foreach(_.animate(time))
   }
 
-  protected def getAnimations: Seq[Animation]
+  protected def getAnimations: List[Animation]
 }
